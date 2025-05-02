@@ -1,3 +1,5 @@
+import '../pages/index.css';
+import { initialCards } from './cards'
 const cardTemplate = document.querySelector("#card-template").content;
 const cardNode = cardTemplate.querySelector(".card");
 const placesList = document.querySelector(".places__list");
