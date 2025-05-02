@@ -1,7 +1,7 @@
 import "../pages/index.css";
 import { createCard, likeCard, likeHandler, removeCard } from "./card";
 import { initialCards } from "./cards";
-import { closeModal, openModal } from "./modal";
+import { addListenerOnPopup, closeModal, openModal } from "./modal";
 
 const placesList = document.querySelector(".places__list");
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -54,5 +54,9 @@ profileEditButton.addEventListener("click", () => {
 profileAddButton.addEventListener("click", () => {
   openModal(popupNewCard);
 });
+
+addListenerOnPopup(popupEdit);
+addListenerOnPopup(popupNewCard);
+addListenerOnPopup(popupImage);
 
 initialCards.forEach((card) => placesList.append(createCard(card, removeCard, likeHandler, imageClickHandler)));
