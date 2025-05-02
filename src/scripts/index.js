@@ -1,20 +1,58 @@
-import '../pages/index.css';
-import { initialCards } from './cards'
-const cardTemplate = document.querySelector("#card-template").content;
-const cardNode = cardTemplate.querySelector(".card");
+import "../pages/index.css";
+import { createCard, likeCard, likeHandler, removeCard } from "./card";
+import { initialCards } from "./cards";
+import { closeModal, openModal } from "./modal";
+
 const placesList = document.querySelector(".places__list");
+const profileEditButton = document.querySelector(".profile__edit-button");
+const profileAddButton = document.querySelector(".profile__add-button");
+const popupEdit = document.querySelector(".popup_type_edit");
+const popupNewCard = document.querySelector(".popup_type_new-card");
+const popupImage = document.querySelector(".popup_type_image");
+const editProfileForm = document.forms["edit-profile"];
+const newPlaceForm = document.forms["new-place"];
+const profileInfoName = document.querySelector(".profile__title");
+const profileInfoDescription = document.querySelector(".profile__description");
 
-initialCards.forEach((card) => placesList.append(createCard(card, removeCard)));
+const imageClickHandler = (image, caption) => {
+  popupImage.querySelector(".popup__image").src = image;
+  popupImage.querySelector(".popup__caption").textContent = caption;
+  openModal(popupImage, image);
+};
 
-function createCard(card, removeCard) {
-  const newCard = cardNode.cloneNode(true);
-  newCard.querySelector(".card__image").src = card.link;
-  newCard.querySelector(".card__image").alt = card.name;
-  newCard.querySelector(".card__title").textContent = card.name;
-  newCard.querySelector(".card__delete-button").addEventListener("click", () => removeCard(newCard));
-  return newCard;
-}
+const resetProfileEdit = () => {
+  editProfileForm.elements.name.value = profileInfoName.textContent;
+  editProfileForm.elements.description.value = profileInfoDescription.textContent;
+};
 
-function removeCard(card) {
-  card.remove();
-}
+const editProfileSumbitHandler = (evt) => {
+  evt.preventDefault();
+  profileInfoName.textContent = editProfileForm.elements.name.value;
+  profileInfoDescription.textContent = editProfileForm.elements.description.value;
+  closeModal(popupEdit);
+};
+
+const newPlaceSumbitHandler = (evt) => {
+  evt.preventDefault();
+  const card = {
+    name: newPlaceForm.elements["place-name"].value,
+    link: newPlaceForm.elements.link.value,
+  };
+  placesList.prepend(createCard(card, removeCard, likeHandler, imageClickHandler));
+  newPlaceForm.reset();
+  closeModal(popupNewCard);
+};
+
+editProfileForm.addEventListener("submit", editProfileSumbitHandler);
+newPlaceForm.addEventListener("submit", newPlaceSumbitHandler);
+
+profileEditButton.addEventListener("click", () => {
+  resetProfileEdit();
+  openModal(popupEdit);
+});
+
+profileAddButton.addEventListener("click", () => {
+  openModal(popupNewCard);
+});
+
+initialCards.forEach((card) => placesList.append(createCard(card, removeCard, likeHandler, imageClickHandler)));
