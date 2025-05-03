@@ -1,8 +1,12 @@
 const cardTemplate = document.querySelector("#card-template").content;
 const cardNode = cardTemplate.querySelector(".card");
 
+function getCardTemplate() {
+  return cardNode.cloneNode(true);
+}
+
 export function createCard(card, removeCard, likeHandler, imageClickHandler) {
-  const newCard = cardNode.cloneNode(true);
+  const newCard = getCardTemplate();
   const image = newCard.querySelector(".card__image");
   const likeButton = newCard.querySelector(".card__like-button");
   image.src = card.link;

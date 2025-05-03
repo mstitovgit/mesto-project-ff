@@ -15,7 +15,9 @@ const profileInfoName = document.querySelector(".profile__title");
 const profileInfoDescription = document.querySelector(".profile__description");
 
 const imageClickHandler = (image, caption) => {
-  popupImage.querySelector(".popup__image").src = image;
+  const imageElement =  popupImage.querySelector(".popup__image");
+ imageElement.src = image;
+ imageElement.alt = caption
   popupImage.querySelector(".popup__caption").textContent = caption;
   openModal(popupImage, image);
 };
