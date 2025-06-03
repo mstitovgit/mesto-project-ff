@@ -15,6 +15,8 @@ export function createCard(card, removeCard, likeHandler, imageClickHandler, myI
   const deleteButton = newCard.querySelector(".card__delete-button");
   if (card.owner._id !== myId) {
     deleteButton.style.display = "none";
+  } else {
+    deleteButton.addEventListener("click", () => removeCard(newCard, card._id));
   }
   if (card.likes.some((user) => user._id === myId)) {
     likeButton.classList.add("card__like-button_is-active");
@@ -27,7 +29,6 @@ export function createCard(card, removeCard, likeHandler, imageClickHandler, myI
   likeButton.addEventListener("click", (e) => {
     likeHandler(e, card._id, likeCounter);
   });
-  newCard.querySelector(".card__delete-button").addEventListener("click", () => removeCard(newCard, card._id));
   return newCard;
 }
 
@@ -40,23 +41,11 @@ export function removeCard(card, id) {
 }
 
 export function likeHandler(evt, cardId, likeCounter) {
-  if (!evt.target.classList.contains("card__like-button_is-active")) {
-    likeCard(cardId)
-      .then((res) => {
-        likeCounter.textContent = res.likes.length;
-        evt.target.classList.add("card__like-button_is-active");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } else {
-    unlikeCard(cardId)
-      .then((res) => {
-        likeCounter.textContent = res.likes.length;
-        evt.target.classList.remove("card__like-button_is-active");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  const likeMethod = evt.target.classList.contains("card__like-button_is-active") ? unlikeCard : likeCard;
+  likeMethod(cardId)
+    .then((res) => {
+      likeCounter.textContent = res.likes.length;
+      evt.target.classList.toggle("card__like-button_is-active");
+    })
+    .catch((err) => console.log(err));
 }

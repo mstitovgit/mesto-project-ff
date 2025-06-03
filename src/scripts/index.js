@@ -14,7 +14,6 @@ export const validationConfig = {
 };
 
 const placesList = document.querySelector(".places__list");
-
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profileAddButton = document.querySelector(".profile__add-button");
 const popupEdit = document.querySelector(".popup_type_edit");
@@ -31,11 +30,7 @@ const avatarElement = document.querySelector(".profile__image");
 const preloader = (isLoading, submitButton) => {
   const loadingText = "Сохранение...";
   const defaultText = "Сохранить";
-  if (isLoading) {
-    submitButton.textContent = loadingText;
-  } else {
-    submitButton.textContent = defaultText;
-  }
+  submitButton.textContent = isLoading ? loadingText : defaultText;
 };
 
 const resetProfileEdit = () => {

@@ -29,7 +29,7 @@ fieldset {
 .popup__error {
   margin-top: 5px;
   display: block;
-  min-height: 27px;
+  min-height: 28px;
   font-size: 12px;
   color: red;
 }
